@@ -1,0 +1,71 @@
+package test;
+
+import java.util.List;
+
+public class LargestTracker {
+	private int TABLESIZE = 256;
+	private int index = 0;
+	private int[] arr = new int[TABLESIZE];
+
+	private final static LargestTracker singleton = new LargestTracker();
+
+	/**
+	 * 
+	 * Guarantees the creation of a single instance across the virtual machine.
+	 * Assumed to be called very frequently.
+	 * 
+	 * @return an instance of LargestTracker
+	 */
+
+	static LargestTracker getInstance() {
+		return singleton;
+	}
+
+	/**
+	 * Returns a list in O(n log m) time OR BETTER where n is the number of
+	 * entries added to LargestTracker and m is numberOfTopLargestElements.
+	 * Duplicates are allowed
+	 * 
+	 * @param numberOfTopLargestElements
+	 *            the number of top-most-elements to return
+	 * @return the top-most-elements in the tracker sorted in ascending order
+	 */
+	List<Integer> getNLargest(int numberOfTopLargestElements);
+
+	/**
+	 * 
+	 * Adds an entry to the tracker. This method must operate in O(log n) time
+	 * OR BETTER
+	 * 
+	 * @param anEntry
+	 *            the entry to add to the tracker. Entries need not be unique.
+	 */
+	private static int[] resizeArray(int[] oldArray, int newSize) {
+		int oldSize = oldArray.length;
+		int[] newArray = new int[newSize];
+		int preserveLength = Math.min(oldSize, newSize);
+		if (preserveLength > 0)
+			System.arraycopy(oldArray, 0, newArray, 0, preserveLength);
+		return newArray;
+	}
+
+	void add(int anEntry) {
+		if (index)
+
+	}
+
+	/**
+	 * Removes all the entries from the tracker. This should return in constant
+	 * time.
+	 */
+
+	void clear() {
+		arr = new int[TABLESIZE];
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

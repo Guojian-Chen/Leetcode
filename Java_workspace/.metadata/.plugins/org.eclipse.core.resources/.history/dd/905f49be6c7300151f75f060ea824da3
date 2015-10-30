@@ -1,0 +1,111 @@
+package test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class LargestTracker {
+	private int TABLESIZE = 256;
+	private int index = 0;
+	private int[] arr = new int[TABLESIZE];
+
+	private final static LargestTracker singleton = new LargestTracker();
+
+	/**
+	 * 
+	 * Guarantees the creation of a single instance across the virtual machine.
+	 * Assumed to be called very frequently.
+	 * 
+	 * @return an instance of LargestTracker
+	 */
+
+	static LargestTracker getInstance() {
+		return singleton;
+	}
+
+	/**
+	 * Returns a list in O(n log m) time OR BETTER where n is the number of
+	 * entries added to LargestTracker and m is numberOfTopLargestElements.
+	 * Duplicates are allowed
+	 * 
+	 * @param numberOfTopLargestElements
+	 *        the number of top-most-elements to return
+	 * @return the top-most-elements in the tracker sorted in ascending order
+	 */
+	List<Integer> getNLargest(int numberOfTopLargestElements){
+		List<Integer> ret = new ArrayList<Integer>();
+		for (int i = index-numberOfTopLargestElements; i < index ; i++) {
+			ret.add(arr[i]);
+		}
+		return ret;
+	}
+
+	private static int[] resizeArray(int[] oldArray, int newSize) {
+		int oldSize = oldArray.length;
+		int[] newArray = new int[newSize];
+		int preserveLength = Math.min(oldSize, newSize);
+		if (preserveLength > 0)
+			System.arraycopy(oldArray, 0, newArray, 0, preserveLength);
+		return newArray;
+	}
+
+	static int quickselect(int[] arr, int anEntry, int a, int b) {
+		
+		int start = a;
+		int end = b;
+		while (start+1 < end) {
+				int mid = start + (end-start)/2;
+				if (arr[mid] > anEntry)
+					end = mid;
+				else if (arr[mid] < anEntry)
+					start = mid;
+				else
+					return mid;
+		}
+		return end;
+	}
+	
+	/**
+	 * 
+	 * Adds an entry to the tracker. This method must operate in O(log n) time
+	 * OR BETTER
+	 * 
+	 * @param anEntry
+	 * the entry to add to the tracker. Entries need not be unique.
+	 */
+	void add(int anEntry) {
+		if (index == TABLESIZE)
+				arr = resizeArray(arr, 2*arr.length);
+		
+		/* find the position of the new entry in the array */
+		int pos = quickselect(arr, anEntry, 0, index -1);
+		System.arraycopy(arr, pos, arr, pos+1, index-pos);
+		arr[pos] = anEntry;
+		index++;
+	}
+
+	/**
+	 * Removes all the entries from the tracker. This should return in constant
+	 * time.
+	 */
+
+	void clear() {
+		arr = new int[TABLESIZE];
+	}
+
+	public void main(String[] args) {
+		// TODO Auto-generated method stub
+		add(3);
+		add(8);
+		add(12);
+		add(14);
+		add(24);
+		add(13);
+		add(15);
+		add(20);
+		List<Integer> x = getNLargest(3);
+		for (int i = 0; i < x.size(); i++) {
+			System.out.printf("%d ", x.get(i));
+		}
+	}
+
+}

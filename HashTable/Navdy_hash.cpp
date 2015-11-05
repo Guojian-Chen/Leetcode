@@ -20,10 +20,12 @@ void addEvent(const char* eventName, fp cb) {
 void removeEvent(const char* eventName, fp cb) {
 	if (hashmap.find(eventName) == hashmap.end())
 		return;
-	std::list<fp> cbList = hashmap[eventName];
-	for (std::list<fp>::iterator it = cbList.begin(); it != cbList.end(); it++) {
+	std::list<fp> *pList = &hashmap[eventName];
+	std::list<fp>::iterator it;
+	for (it = pList->begin(); it != pList->end(); it++) {
 		if ((*it) == cb) {
-			cbList.erase(it);
+			cout<< eventName << "remove func name *it" << *it << "and cb" << cb << endl;
+			pList->erase(it);
 			break;
 		}
 	}
@@ -35,7 +37,7 @@ void postEvent(const char* eventName) {
 	}
 	std::list<fp> cbList = hashmap[eventName];
 	for (std::list<fp>::iterator it = cbList.begin(); it != cbList.end(); it++) {
-		(*it)();
+		(*(*it))();
 	}
 }
 
